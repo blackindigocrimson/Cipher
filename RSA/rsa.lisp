@@ -1,6 +1,6 @@
 ;;
 ;; RSA
-;; @klkl_sn
+;; @shinkwhek
 
 (defun mydiv (a b)
   "div"
