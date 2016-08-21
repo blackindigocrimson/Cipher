@@ -5,12 +5,14 @@
 (defun mydiv (a b)
   "div"
   (floor (/ a b)))
+
 (defun speed-power (a b)
   "a^b"
   (cond
     ((= b 0) 1)
     ((evenp b) (speed-power (* a a) (mydiv b 2)))
     (t (* a (speed-power a (1- b))))))
+
 (defun power-mod (a b n)
   "a^b mod n"
   (mod (speed-power a b) n))
@@ -19,17 +21,21 @@
   "char -> code"
   (cond ((eq c #\space) 0)
         (t (1+ (- (char-code c) (char-code #\a))))))
+
 (defun string2list (text)
   "string -> list (char2code)"
   (map 'list (lambda (x)
                (char2code x))
        text))
+
 (defun multiply100 (x) (* x 100))
+
 (defun list2number (input)
   (reduce (lambda (a b)
             (+ (multiply100 a) b))
           input
           :initial-value 0))
+
 (defun encode-rsa (lst)
   "(plain text)^keyE mod keyN (keyE keyN plain)"
   (format t "~a~%" (power-mod (list2number (string2list (third lst))) (first lst) (second lst))))
@@ -38,16 +44,17 @@
   (map 'string (lambda (n)
                  (cond ((eq n 0) #\space)
                        (t (code-char (+ n (char-code #\a) -1))))) x))
+
 (defun divide100 (x a)
   (if (> 100 x) (push x a)
     (progn
       (push (cadr (multiple-value-list (truncate x 100))) a)
       (divide100 (car (multiple-value-list (truncate x 100))) a))))
+
 (defun decode-rsa (lst)
   "(cipher text)^keyD mod keyN (keyD keyN code)"
   (let ((a nil))
     (list2string (divide100 (power-mod (third lst) (first lst) (second lst)) a))))
-
 
 (defun defq (a b) (mydiv (caddr a) (caddr b)))
 (defun euclid (f g)
@@ -57,6 +64,7 @@
     (if (caddr g)
          (cadr f)
          (euclid g ff))))
+
 (defun find-d (lst)
   (format t "~a~%" (euclid (list 1 0 (lcm (1- (first lst)) (1- (second lst)))) (list 0 1 (third lst)))))
 
