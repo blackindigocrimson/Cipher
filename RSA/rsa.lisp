@@ -60,6 +60,7 @@
 (defun find-d (lst)
   (format t "~a~%" (euclid (list 1 0 (lcm (1- (first lst)) (1- (second lst)))) (list 0 1 (third lst)))))
 
+;; こっから対話形式にしようと思ったけどやっぱやめた
 (defun read-prompt (prompt)
   (format *query-io* " ~a : " prompt)
   (force-output)
@@ -97,7 +98,8 @@
         (main-iter))))
 
 (defun main ()
-  (init-prompt)
-  (main-iter))
+  (progn
+    (init-prompt)
+    (main-iter)))
 
 (main)
